@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  clean-todo:
+    container_name: clean-todo-app
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - postgres
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    command: yarn dev
+    volumes:
+      - .:/srv/app
+      - app_node_modules:/srv/app/node_modules
+
+  postgres:
+    container_name: clean-todo-postgres
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+
+volumes:
+  app_node_modules:
+  db:
+    driver: local
