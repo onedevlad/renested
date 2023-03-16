@@ -1,2 +1,5 @@
 import 'reflect-metadata'
-import './frameworks/web'
+import dotenv from 'dotenv'
+
+dotenv.config()
+require('./frameworks/web')

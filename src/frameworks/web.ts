@@ -1,12 +1,11 @@
 import express from 'express'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 
 import { AuthController } from 'controllers/auth'
 import { bootstrapIOC } from 'config/Inversify'
 import { TYPES } from 'config/types'
+import { logger } from 'services/logger'
 
-dotenv.config()
 const container = bootstrapIOC()
 
 const app = express()
@@ -26,7 +25,7 @@ export class ExpressBootstrap {
     app.use(router)
 
     app.listen(process.env.APP_PORT, () =>
-      console.log(`Listening on port ${process.env.APP_PORT}`)
+      logger.info(`Listening on port ${process.env.APP_PORT}`)
     )
   }
 }

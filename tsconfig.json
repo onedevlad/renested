@@ -2,13 +2,11 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
     "sourceMap": true,
     "experimentalDecorators": true,
     "outDir": "./build",
     "baseUrl": ".",
     "paths": {
-      "root": ["src/*"],
       "config/*": ["src/config/*"],
       "controllers/*": ["src/controllers/*"],
       "entities/*": ["src/entities/*"],
