@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify'
+import type { Response } from 'express'
 
-import { CreateUser } from "../../useCases/auth/createUser";
-import type { Response } from "express"
-import {BusinessErrors} from "../../errors";
-import {TYPES} from '../../config/types';
+import { CreateUser } from 'useCases/auth/createUser'
+import { BusinessErrors } from 'errors/index'
+import { TYPES } from 'config/types'
 
 interface ICreateUserRequest {
   name?: string
@@ -15,9 +15,7 @@ interface ICreateUserRequest {
 export class AuthController {
   createUserUseCase: CreateUser
 
-  constructor(
-    @inject(TYPES.CreateUserUseCase) createUserUseCase: CreateUser,
-  ) {
+  constructor(@inject(TYPES.CreateUserUseCase) createUserUseCase: CreateUser) {
     this.createUserUseCase = createUserUseCase
   }
 
@@ -25,8 +23,9 @@ export class AuthController {
     try {
       const userData = await this.createUserUseCase.exec(req)
       res.status(200).send(userData)
-    } catch(error) {
-      if(error.message === BusinessErrors.USER_EXISTS) res.status(422).send({ error: error.message })
+    } catch (error) {
+      if (error.message === BusinessErrors.USER_EXISTS)
+        res.status(422).send({ error: error.message })
       throw error
     }
   }

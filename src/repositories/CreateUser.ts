@@ -1,5 +1,5 @@
-import { injectable  } from "inversify"
-import { BusinessErrors } from "../errors"
+import { injectable } from 'inversify'
+import { BusinessErrors } from 'errors/index'
 
 interface IOutCreatedUserDTO {
   name: string
@@ -13,12 +13,14 @@ interface IInCreatedUserDTO {
 }
 
 export interface ICreateUserRepository {
-  create (createdUserData: IInCreatedUserDTO): Promise<IOutCreatedUserDTO | BusinessErrors.USER_EXISTS>
+  create(
+    createdUserData: IInCreatedUserDTO
+  ): Promise<IOutCreatedUserDTO | BusinessErrors.USER_EXISTS>
 }
 
 @injectable()
 export class CreateUserRepository {
-  async create (createdUserData: IInCreatedUserDTO) {
+  async create() {
     return BusinessErrors.USER_EXISTS
   }
 }

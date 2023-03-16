@@ -13,8 +13,9 @@ RUN yarn
 CMD ["yarn", "dev"]
 
 FROM base as prod
-ENV NODE_ENV=production
+COPY --chown=node:node package.json yarn.lock ./
 RUN yarn
+ENV NODE_ENV=production
 COPY . .
-RUN yarn build:prod
-CMD ["yarn", "start:prod"]
+# RUN yarn build:prod
+# CMD ["yarn", "start:prod"]
