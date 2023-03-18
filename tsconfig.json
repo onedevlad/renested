@@ -9,13 +9,13 @@
     "baseUrl": ".",
     "paths": {
       "config/*": ["src/config/*"],
-      "controllers/*": ["src/controllers/*"],
+      "dtos/*": ["src/dtos/*"],
       "entities/*": ["src/entities/*"],
-      "errors/*": ["src/errors/*"],
+      "exceptions/*": ["src/exceptions/*"],
       "frameworks/*": ["src/frameworks/*"],
       "repositories/*": ["src/repositories/*"],
       "services/*": ["src/services/*"],
-      "useCases/*": ["src/useCases/*"]
+      "use-cases/*": ["src/use-cases/*"]
     }
   },
   "include": ["src", "env.d.ts"]

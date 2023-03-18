@@ -1,36 +1,63 @@
 import express from 'express'
 import morgan from 'morgan'
 
-import type { AuthController } from 'controllers/auth'
-import type { AppDataSource } from 'frameworks/persistance/dataSource'
-import { bootstrapIOC } from 'config/Inversify'
-import { TYPES } from 'config/types'
-import { logger } from 'services/logger'
+import type { Container } from 'inversify'
+import { InversifyExpressServer } from "inversify-express-utils"
+import { Application, IAbstractApplicationOptions } from './lib/abstract-application'
 
-const container = bootstrapIOC()
+import { AppDataSource } from 'frameworks/persistance/dataSource'
 
-const app = express()
-const router = express.Router()
+import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware'
+import { Logger } from 'services/logger'
+import { AppContainer } from 'config/container'
 
-export class ExpressBootstrap {
-  static async start() {
-    app.use(express.json())
-    app.use(morgan('dev'))
+import "./controllers"
 
-    router.post('/api/v1/auth/register', (req, res) =>
-      container
-        .get<AuthController>(TYPES.AuthController)
-        .register(req.body, res)
-    )
+class App extends Application {
+  constructor() {
+    super({
+      containerOptions: {
+        defaultScope: 'Singleton',
+      },
+      dbOptions: {
+        host: process.env.POSTGRES_HOST,
+        port: +process.env.POSTGRES_PORT,
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+      },
+      logging: {
+        logLevel: process.env.LOG_LEVEL,
+      },
+    })
+  }
 
-    app.use(router)
+  configureServices(container: Container) {
+    AppContainer.init(container)
+  }
 
-    await container.get<AppDataSource>(TYPES.AppDataSource).init()
+  async setup(options: IAbstractApplicationOptions) {
+    const logger = this.container.get(Logger)
+    logger.init({ logLevel: options.logging.logLevel })
+
+    const dataSource = this.container.get(AppDataSource)
+    await dataSource.init(options.dbOptions)
+
+    const server = new InversifyExpressServer(this.container)
+
+    server.setErrorConfig(app => app.use(ErrorHandlerMiddleware.execute))
+
+    server.setConfig(app => {
+      app.use(express.json())
+      app.use(morgan('dev'))
+    })
+
+    const app = server.build()
 
     app.listen(process.env.APP_PORT, () =>
-      logger.info(`Listening on port ${process.env.APP_PORT}`)
+      logger.logger.info(`Listening on port ${process.env.APP_PORT}`)
     )
   }
 }
 
-ExpressBootstrap.start()
+new App()

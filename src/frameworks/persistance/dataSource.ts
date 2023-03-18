@@ -1,30 +1,35 @@
 import { DataSource } from "typeorm"
 import { injectable } from "inversify"
-import { logger } from "services/logger"
-import { User } from "repositories/UserEntity"
+import { Logger } from "services/logger"
+
+interface IDbConnectionOptions {
+  host: string
+  port: number
+  username: string
+  password: string
+  database: string
+}
 
 @injectable()
 export class AppDataSource {
-  dataSource: DataSource
+  public dataSource: DataSource
 
-  async init() {
+  constructor(private readonly logger: Logger) {}
+
+  async init(connectionOptions: IDbConnectionOptions) {
     const dataSource = new DataSource({
       type: "postgres",
-      host: process.env.POSTGRES_HOST,
-      port: +process.env.POSTGRES_PORT,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
       synchronize: true,
-      entities: [User],
+      entities: ["src/repositories/entities/*.ts"],
       entityPrefix: 'app_',
+      ...connectionOptions
     })
 
     try {
       this.dataSource = await dataSource.initialize()
-      logger.info("Data Source has been initialized!")
+      this.logger.logger.info("Data Source has been initialized!")
     } catch(e) {
-      logger.error("Error during Data Source initialization", e)
+      this.logger.logger.error("Error during Data Source initialization", e)
       throw e
     }
   }
