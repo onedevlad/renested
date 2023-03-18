@@ -12,10 +12,9 @@
       "dtos/*": ["src/dtos/*"],
       "entities/*": ["src/entities/*"],
       "exceptions/*": ["src/exceptions/*"],
-      "frameworks/*": ["src/frameworks/*"],
       "repositories/*": ["src/repositories/*"],
       "services/*": ["src/services/*"],
-      "use-cases/*": ["src/use-cases/*"]
+      "web/*": ["src/web/*"]
     }
   },
   "include": ["src", "env.d.ts"]

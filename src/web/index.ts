@@ -3,11 +3,10 @@ import morgan from 'morgan'
 
 import type { Container } from 'inversify'
 import { InversifyExpressServer } from "inversify-express-utils"
+
 import { Application, IAbstractApplicationOptions } from './lib/abstract-application'
-
-import { AppDataSource } from 'frameworks/persistance/dataSource'
-
 import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware'
+import { AppDataSource } from './persistance/dataSource'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
 

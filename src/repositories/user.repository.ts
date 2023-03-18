@@ -1,8 +1,8 @@
 import { injectable } from 'inversify'
 import type { Repository } from 'typeorm'
 
-import { AppDataSource } from 'frameworks/persistance/dataSource'
-import { User } from './entities/user.entity'
+import { AppDataSource } from 'web/persistance/dataSource'
+import { User } from 'repositories/entities/user.entity'
 import { CreateUserDto, UserDto } from 'dtos/index'
 
 @injectable()

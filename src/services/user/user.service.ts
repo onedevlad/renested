@@ -4,12 +4,12 @@ import { UserRepository } from 'repositories/user.repository'
 import { UserAlreadyExistsException } from 'exceptions/user-already-exists.exception'
 
 @injectable()
-export class CreateUserUseCase {
+export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
   ) {}
 
-  async exec(createUserDto: CreateUserDto): Promise<UserDto> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
     const existingUser = await this.userRepository.findByEmail(createUserDto.email)
     if (existingUser) throw new UserAlreadyExistsException()
 

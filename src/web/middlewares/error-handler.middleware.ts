@@ -1,6 +1,6 @@
 import { NextFunction, type Request, type Response } from 'express'
 import { UserAlreadyExistsException, ValidationException } from 'exceptions/index'
-import { BaseHttpResponse } from 'frameworks/web/lib/base-http-response'
+import { BaseHttpResponse } from 'web/lib/base-http-response'
 
 export class ErrorHandlerMiddleware {
   static execute(err: Error, _req: Request, res: Response, next: NextFunction) {

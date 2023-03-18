@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import { BaseMiddleware } from 'frameworks/web/lib/base-middleware'
+import { BaseMiddleware } from 'web/lib/base-middleware'
 
 export class ValidateRequestMiddleware extends BaseMiddleware {
   constructor(
