@@ -12,9 +12,12 @@ interface IDbConnectionOptions {
 
 @injectable()
 export class AppDataSource {
-  public dataSource: DataSource
+  private _dataSource: DataSource
+  private logger: Logger['logger']
 
-  constructor(private readonly logger: Logger) {}
+  constructor(logger: Logger) {
+    this.logger = logger.logger
+  }
 
   async init(connectionOptions: IDbConnectionOptions) {
     const dataSource = new DataSource({
@@ -26,11 +29,15 @@ export class AppDataSource {
     })
 
     try {
-      this.dataSource = await dataSource.initialize()
-      this.logger.logger.info("Data Source has been initialized!")
+      this._dataSource = await dataSource.initialize()
+      this.logger.info("Data Source has been initialized!")
     } catch(e) {
-      this.logger.logger.error("Error during Data Source initialization", e)
+      this.logger.error("Error during Data Source initialization", e)
       throw e
     }
+  }
+
+  get dataSource() {
+    return this._dataSource
   }
 }

@@ -54,7 +54,7 @@ class App extends Application {
     const app = server.build()
 
     app.listen(process.env.APP_PORT, () =>
-      logger.logger.info(`Listening on port ${process.env.APP_PORT}`)
+      logger.logger.info(logger.box(`Listening on 0.0.0.0:${process.env.APP_PORT}`))
     )
   }
 }
