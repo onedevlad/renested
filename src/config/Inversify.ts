@@ -5,7 +5,9 @@ import {
   CreateUserRepository,
 } from 'repositories/CreateUser'
 import { CreateUserValidationService } from 'services/validation/createUserValidation'
+import { AppDataSource } from 'frameworks/persistance/dataSource'
 import { CreateUser } from 'useCases/auth/createUser'
+
 import { TYPES } from 'config/types'
 
 export const bootstrapIOC = () => {
@@ -18,6 +20,7 @@ export const bootstrapIOC = () => {
     .bind<CreateUserValidationService>(TYPES.CreateUserValidationService)
     .to(CreateUserValidationService)
   container.bind<AuthController>(TYPES.AuthController).to(AuthController)
+  container.bind<AppDataSource>(TYPES.AppDataSource).to(AppDataSource).inSingletonScope()
 
   return container
 }

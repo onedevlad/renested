@@ -8,7 +8,9 @@ services:
     depends_on:
       - postgres
     ports:
+      - "9229:9229"
       - "${APP_PORT}:${APP_PORT}"
+    tty: true
     command: yarn dev
     volumes:
       - .:/srv/app

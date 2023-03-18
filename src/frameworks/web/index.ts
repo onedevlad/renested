@@ -1,7 +1,8 @@
 import express from 'express'
 import morgan from 'morgan'
 
-import { AuthController } from 'controllers/auth'
+import type { AuthController } from 'controllers/auth'
+import type { AppDataSource } from 'frameworks/persistance/dataSource'
 import { bootstrapIOC } from 'config/Inversify'
 import { TYPES } from 'config/types'
 import { logger } from 'services/logger'
@@ -12,7 +13,7 @@ const app = express()
 const router = express.Router()
 
 export class ExpressBootstrap {
-  static start() {
+  static async start() {
     app.use(express.json())
     app.use(morgan('dev'))
 
@@ -23,6 +24,8 @@ export class ExpressBootstrap {
     )
 
     app.use(router)
+
+    await container.get<AppDataSource>(TYPES.AppDataSource).init()
 
     app.listen(process.env.APP_PORT, () =>
       logger.info(`Listening on port ${process.env.APP_PORT}`)

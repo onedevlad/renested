@@ -6,7 +6,8 @@ import { ICreateUserRepository } from 'repositories/CreateUser'
 import { CreateUserValidationService } from 'services/validation/createUserValidation'
 
 export interface ICreateUserInput {
-  name?: string
+  firstName?: string
+  lastName?: string
   email?: string
   password?: string
 }
@@ -26,15 +27,18 @@ export class CreateUser {
   }
 
   async exec(createUserInput: ICreateUserInput): Promise<UserData> {
-    const isEmailValid =
+    const isUserValid =
       this.createUserValidationService.validate(createUserInput)
-    if (isEmailValid) throw new Error(SystemErrors.INVALID_EMAIL)
+
+    if (!isUserValid) throw new Error(SystemErrors.INVALID_EMAIL)
+
+    const existingUser = await this.userRepository.findByEmail(createUserInput.email)
+    if (existingUser) throw new Error(BusinessErrors.USER_EXISTS)
 
     const res = await this.userRepository.create(
       createUserInput as Required<ICreateUserInput>
     )
-    if (res === BusinessErrors.USER_EXISTS) throw new Error(res)
 
-    return new UserData(res.name, res.email)
+    return new UserData(res.id, res.firstName, res.lastName, res.email)
   }
 }

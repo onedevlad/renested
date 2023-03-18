@@ -21,6 +21,7 @@ module.exports = {
     "object-curly-spacing": [ERROR, 'always'],
     "semi": [ERROR, "never"],
     "no-unused-vars": OFF,
+    "no-debugger": ERROR,
     "@typescript-eslint/no-unused-vars": [ERROR]
   },
 }
