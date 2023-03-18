@@ -18,5 +18,5 @@
       "useCases/*": ["src/useCases/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "env.d.ts"]
 }

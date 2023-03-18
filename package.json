@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
+    "gen-env-types": "npx gen-env-types .env",
     "build:prod": "./node_modules/.bin/tsc",
     "start:prod": "node build/index.js"
   },
