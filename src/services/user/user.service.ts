@@ -13,8 +13,10 @@ export class UserService {
     const existingUser = await this.userRepository.findByEmail(createUserDto.email)
     if (existingUser) throw new UserAlreadyExistsException()
 
-    const res = await this.userRepository.create(createUserDto)
+    return this.userRepository.create(createUserDto)
+  }
 
-    return new UserDto(res.id, res.firstName, res.lastName, res.email)
+  async listUsers(): Promise<UserDto[]> {
+    return this.userRepository.listAll()
   }
 }

@@ -1,19 +1,15 @@
-import { ValidationException } from "exceptions/index"
+import { IsEmail, Length } from "class-validator"
 
 export class CreateUserDto {
-  constructor(
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-    public readonly password: string,
-  ) {}
+  @Length(2, 100, { message: "First name should contain 2-100 characters" })
+  firstName: string
 
-  static from(body: Partial<CreateUserDto>) {
-    if (!body.firstName) throw new ValidationException('Missing firstName')
-    if (!body.lastName) throw new ValidationException('Missing lastName')
-    if (!body.email) throw new ValidationException('Missing email')
-    if (!body.password) throw new ValidationException('Missing password')
+  @Length(2, 100, { message: "Last name should contain 2-100 characters" })
+  lastName: string
 
-    return new CreateUserDto(body.firstName, body.lastName, body.email, body.password)
-  }
+  @IsEmail({}, { message: "Invalid email" })
+  email: string
+
+  @Length(8, 100, { message: "Invalid password" })
+  password: string
 }

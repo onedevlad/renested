@@ -16,11 +16,14 @@ export class UserRepository {
   findByEmail = async (email: string) => this.repository.findOneBy({ email })
 
   async create(createUserDto: CreateUserDto) {
-    const user = new User()
+    const user = Object.assign(new User(), createUserDto)
 
-    Object.assign(user, createUserDto)
-    const newUser = await this.repository.save(user)
+    const userModel = await this.repository.save(user)
+    return UserDto.from(userModel)
+  }
 
-    return new UserDto(newUser.id, newUser.firstName, newUser.lastName, newUser.email)
+  async listAll() {
+    const users = await this.repository.find()
+    return users.map(UserDto.from)
   }
 }

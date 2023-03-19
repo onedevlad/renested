@@ -1,12 +1,19 @@
-export class UserDto {
-  constructor(
-    public readonly id: number,
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-  ) {}
+import { User } from "repositories/entities/user.entity"
 
-  static from(body: Partial<UserDto>) {
-    return new UserDto(body.id, body.firstName, body.lastName, body.email)
+export class UserDto {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+
+  static from(user: User) {
+    const dto = new UserDto()
+
+    dto.id = user.id
+    dto.firstName = user.firstName
+    dto.lastName = user.lastName
+    dto.email = user.email
+
+    return dto
   }
 }
