@@ -1,9 +1,13 @@
 export class BaseHttpResponse {
+  public errors: string[]
+
   constructor(
     public readonly data: unknown = {},
-    public readonly errors: string[] | null = null,
-    public readonly statusCode: number
-  ) {}
+    errors: string[] | null = null,
+    public readonly statusCode: number,
+  ) {
+    if (errors?.length) this.errors = errors
+  }
 
   static success(data: unknown, statusCode = 200) {
     return new BaseHttpResponse(data, null, statusCode)

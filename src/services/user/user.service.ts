@@ -2,6 +2,7 @@ import { injectable } from 'inversify'
 import { CreateUserDto, UserDto } from 'dtos/index'
 import { UserRepository } from 'repositories/user.repository'
 import { UserAlreadyExistsException } from 'exceptions/user-already-exists.exception'
+import { PaginationData } from 'utils/types'
 
 @injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
     return this.userRepository.create(createUserDto)
   }
 
-  async listUsers(): Promise<UserDto[]> {
-    return this.userRepository.listAll()
+  async listUsers(paginationData: PaginationData): Promise<UserDto[]> {
+    return this.userRepository.listAll(paginationData)
   }
 }

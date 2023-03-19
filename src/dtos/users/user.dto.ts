@@ -16,4 +16,8 @@ export class UserDto {
 
     return dto
   }
+
+  static fromMany(users: User[]) {
+    return users.map(UserDto.from)
+  }
 }

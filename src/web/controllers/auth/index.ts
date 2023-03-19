@@ -5,14 +5,15 @@ import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.midd
 import { controller, httpGet, httpPost } from 'inversify-express-utils'
 
 import { UserService } from 'services/user/user.service'
+import { PaginationMiddleware, PaginatedResponse } from 'web/middlewares/pagination.middleware'
 
 @controller("/users")
 export class AuthController {
   constructor(private readonly userService: UserService) {}
 
-  @httpGet("/")
-  async index(_req: Request, res: Response) {
-    const users = await this.userService.listUsers()
+  @httpGet("/", PaginationMiddleware)
+  async index(_req: Request, res: PaginatedResponse) {
+    const users = await this.userService.listUsers(res.locals.pagination)
 
     const response = BaseHttpResponse.success(users)
     res.json(response)

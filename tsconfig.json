@@ -19,6 +19,7 @@
       "exceptions/*": ["src/exceptions/*"],
       "repositories/*": ["src/repositories/*"],
       "services/*": ["src/services/*"],
+      "utils/*": ["src/utils/*"],
       "web/*": ["src/web/*"]
     }
   },
