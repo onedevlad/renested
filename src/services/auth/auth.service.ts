@@ -1,17 +1,18 @@
 import { injectable } from 'inversify'
-import jwt from 'jsonwebtoken'
 
 import { CreateUserDto, UserDto } from 'dtos/index'
 import { UserRepository } from 'repositories/user.repository'
 import { PasswordService } from 'services/password/password.service'
 import { AuthTokenDto } from 'dtos/auth/auth-token.dto'
 import { User } from 'repositories/entities/user.entity'
+import { TokenService } from 'services/token/token.service'
 
 @injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordService: PasswordService
+    private readonly passwordService: PasswordService,
+    private readonly tokenService: TokenService,
   ) { }
 
   async findUserByEmail(email: string) {
@@ -32,12 +33,7 @@ export class AuthService {
   }
 
   async makeToken(user: User) {
-    const token = jwt.sign(
-      { data: { id: user.id, email: user.email } },
-      process.env.JWT_SECRET,
-      { expiresIn: '1y' }
-    )
-
+    const token = this.tokenService.createToken(user)
     return new AuthTokenDto(token)
   }
 }

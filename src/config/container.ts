@@ -7,6 +7,7 @@ import { AuthService } from 'services/auth/auth.service'
 import { PasswordService } from 'services/password/password.service'
 import { RegisterUserUseCase } from 'use-cases/auth/register-user.use-case'
 import { LoginUseCase } from 'use-cases/auth/login.use-case'
+import { TokenService } from 'services/token/token.service'
 
 export class AppContainer {
   static init(container: Container) {
@@ -17,5 +18,6 @@ export class AppContainer {
     container.bind(PasswordService).toSelf()
     container.bind(RegisterUserUseCase).toSelf()
     container.bind(LoginUseCase).toSelf()
+    container.bind(TokenService).toSelf()
   }
 }
