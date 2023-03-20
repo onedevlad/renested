@@ -1,27 +1,31 @@
-import { CreateUserDto } from 'dtos/users/create-user.dto'
+import { CreateUserDto } from 'dtos/auth/create-user.dto'
 import type { Request, Response } from 'express'
 import { BaseHttpResponse } from 'web/lib/base-http-response'
 import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
-import { controller, httpGet, httpPost } from 'inversify-express-utils'
+import { controller, httpPost } from 'inversify-express-utils'
 
-import { UserService } from 'services/user/user.service'
-import { PaginationMiddleware, PaginatedResponse } from 'web/middlewares/pagination.middleware'
+import { LoginDataDto } from 'dtos/auth/login-data.dto'
+import { RegisterUserUseCase } from 'use-cases/auth/register-user.use-case'
+import { LoginUseCase } from 'use-cases/auth/login.use-case'
 
-@controller("/users")
+@controller("/auth")
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly loginUseCase: LoginUseCase,
+    private readonly registerUserUseCase: RegisterUserUseCase,
+  ) {}
 
-  @httpGet("/", PaginationMiddleware)
-  async index(_req: Request, res: PaginatedResponse) {
-    const users = await this.userService.listUsers(res.locals.pagination)
+  @httpPost('/login', ValidateRequestMiddleware.with(LoginDataDto))
+  async login(req: Request<unknown, LoginDataDto>, res: Response) {
+    const token = await this.loginUseCase.execute(req.body)
 
-    const response = BaseHttpResponse.success(users)
+    const response = BaseHttpResponse.success(token)
     res.json(response)
   }
 
   @httpPost("/register", ValidateRequestMiddleware.with(CreateUserDto))
-  async save(req: Request, res: Response) {
-    const user = await this.userService.createUser(req.body)
+  async register(req: Request<unknown, CreateUserDto>, res: Response) {
+    const user = await this.registerUserUseCase.execute(req.body)
 
     const response = BaseHttpResponse.success(user)
     res.json(response)

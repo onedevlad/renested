@@ -16,7 +16,7 @@ export class UserRepository {
 
   async findByEmail(email: string) {
    const user = await this.repository.findOneBy({ email })
-   return UserDto.from(user)
+   return user || null
   }
 
   async create(createUserDto: CreateUserDto) {

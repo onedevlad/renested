@@ -43,8 +43,9 @@ class App extends Application {
     await dataSource.init(options.dbOptions)
 
     const server = new InversifyExpressServer(this.container)
+    const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger.logger)
 
-    server.setErrorConfig(app => app.use(ErrorHandlerMiddleware.execute))
+    server.setErrorConfig(app => app.use(errorHandlerMiddleware.execute))
 
     server.setConfig(app => {
       app.use(express.json())

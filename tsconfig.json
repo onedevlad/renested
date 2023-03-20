@@ -3,7 +3,7 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "target": "es5",
+    "target": "es2015",
     "lib": ["es6", "dom"],
     "types": ["reflect-metadata"],
     "module": "commonjs",
@@ -19,6 +19,7 @@
       "exceptions/*": ["src/exceptions/*"],
       "repositories/*": ["src/repositories/*"],
       "services/*": ["src/services/*"],
+      "use-cases/*": ["src/use-cases/*"],
       "utils/*": ["src/utils/*"],
       "web/*": ["src/web/*"]
     }
