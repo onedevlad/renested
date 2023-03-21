@@ -1,4 +1,4 @@
-import { User } from "repositories/entities/user.entity"
+import { UserEntity } from "modules/user"
 
 export class UserDto {
   id: number
@@ -6,7 +6,7 @@ export class UserDto {
   lastName: string
   email: string
 
-  static from(user: User) {
+  static from(user: UserEntity) {
     const dto = new UserDto()
 
     dto.id = user.id
@@ -17,7 +17,7 @@ export class UserDto {
     return dto
   }
 
-  static fromMany(users: User[]) {
+  static fromMany(users: UserEntity[]) {
     return users.map(UserDto.from)
   }
 }

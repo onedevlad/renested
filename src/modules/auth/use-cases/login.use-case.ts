@@ -1,8 +1,7 @@
-import { AuthTokenDto } from 'dtos/auth/auth-token.dto'
-import { LoginDataDto } from 'dtos/auth/login-data.dto'
 import { InvalidCredentialsException } from 'exceptions/invalid-credentials.exception'
 import { injectable } from 'inversify'
-import { AuthService } from 'services/auth/auth.service'
+import { AuthService } from 'modules/auth/auth.service'
+import { AuthTokenDto, LoginDataDto } from 'modules/auth/dto'
 import { IUseCase } from 'utils/types'
 
 @injectable()

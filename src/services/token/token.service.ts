@@ -1,10 +1,10 @@
 import { injectable } from 'inversify'
 import jwt from 'jsonwebtoken'
-import { User } from 'repositories/entities/user.entity'
+import { UserEntity } from 'modules/user'
 
 @injectable()
 export class TokenService {
-  createToken(user: User) {
+  createToken(user: UserEntity) {
     const token = jwt.sign(
       { data: { id: user.id, email: user.email } },
       process.env.JWT_SECRET,

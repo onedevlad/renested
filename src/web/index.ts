@@ -10,7 +10,7 @@ import { AppDataSource } from './persistance/dataSource'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
 
-import "./controllers"
+import "modules/auth/auth.controller"
 
 class App extends Application {
   constructor() {

@@ -23,7 +23,7 @@ export class AppDataSource {
     const dataSource = new DataSource({
       type: "postgres",
       synchronize: true,
-      entities: ["src/repositories/entities/*.ts"],
+      entities: ["src/modules/**/*.entity.ts"],
       entityPrefix: 'app_',
       ...connectionOptions
     })

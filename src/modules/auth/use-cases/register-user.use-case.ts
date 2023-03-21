@@ -1,8 +1,8 @@
-import { CreateUserDto } from 'dtos/auth'
-import { UserDto } from 'dtos/users'
+import { CreateUserDto } from 'modules/auth/dto'
+import { UserDto } from 'modules/user'
 import { UserAlreadyExistsException } from 'exceptions/user-already-exists.exception'
 import { injectable } from 'inversify'
-import { AuthService } from 'services/auth/auth.service'
+import { AuthService } from 'modules/auth/auth.service'
 import { IUseCase } from 'utils/types'
 
 @injectable()
