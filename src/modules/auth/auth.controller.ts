@@ -1,32 +1,33 @@
 import type { Request, Response } from 'express'
-import { BaseHttpResponse } from 'web/lib/base-http-response'
 import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
 import { controller, httpPost } from 'inversify-express-utils'
 
 import { LoginDataDto, CreateUserDto } from './dto'
 import { RegisterUserUseCase } from './use-cases/register-user.use-case'
 import { LoginUseCase } from './use-cases/login.use-case'
+import {
+  UserAlreadyExistsException,
+  InvalidCredentialsException,
+} from 'modules/auth/exceptions'
+import { BaseController } from 'web/lib/base-controller'
+import { handleErrors } from 'web/lib/decorators/error-handler.decorator'
 
 @controller('/auth')
-export class AuthController {
+export class AuthController extends BaseController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUserUseCase: RegisterUserUseCase
-  ) { }
+  ) { super() }
 
   @httpPost('/login', ValidateRequestMiddleware.with(LoginDataDto))
+  @handleErrors([[InvalidCredentialsException, 403]])
   async login(req: Request<unknown, LoginDataDto>, res: Response) {
-    const token = await this.loginUseCase.execute(req.body)
-
-    const response = BaseHttpResponse.success(token)
-    res.json(response)
+    return this.executeUseCase(this.loginUseCase, req, res)
   }
 
   @httpPost('/register', ValidateRequestMiddleware.with(CreateUserDto))
+  @handleErrors([[UserAlreadyExistsException, 422]])
   async register(req: Request<unknown, CreateUserDto>, res: Response) {
-    const user = await this.registerUserUseCase.execute(req.body)
-
-    const response = BaseHttpResponse.success(user)
-    res.json(response)
+    return this.executeUseCase(this.registerUserUseCase, req, res)
   }
 }

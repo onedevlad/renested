@@ -1,34 +1,30 @@
 import { NextFunction, type Request, type Response } from 'express'
-import {
-  InvalidCredentialsException,
-  UserAlreadyExistsException,
-  ValidationException,
-} from 'exceptions/index'
 import { BaseHttpResponse } from 'web/lib/base-http-response'
 import { Logger } from 'services/logger'
+import { ValidationException, HttpException } from 'exceptions/index'
 
 export class ErrorHandlerMiddleware {
   constructor(private readonly logger: Logger['logger']) {}
 
+  sendResponse(res: Response, error: Error, statusCode: number) {
+    const response = BaseHttpResponse.error(error.message, statusCode)
+    return res.status(response.statusCode).json(response)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   execute = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
+    if (err instanceof HttpException) {
+      const { error, statusCode } = err
+
+      return this.sendResponse(res, error, statusCode)
+    }
+
     if (err instanceof ValidationException) {
-      const response = BaseHttpResponse.error(err.msgs, 422)
-      return res.status(response.statusCode).json(response)
+      return this.sendResponse(res, err, 422)
     }
 
-    if (err instanceof UserAlreadyExistsException) {
-      const response = BaseHttpResponse.error(err.message, 422)
-      return res.status(response.statusCode).json(response)
-    }
+    console.log(err) // TODO: make winston log errors 
 
-    if (err instanceof InvalidCredentialsException) {
-      const response = BaseHttpResponse.error(err.message, 403)
-      return res.status(response.statusCode).json(response)
-    }
-
-    console.log(err)
-    const response = BaseHttpResponse.error(err.message, 500)
-    return res.status(response.statusCode).json(response)
+    return this.sendResponse(res, err, 500)
   }
 }

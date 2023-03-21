@@ -1,8 +1,8 @@
-import { InvalidCredentialsException } from 'exceptions/invalid-credentials.exception'
 import { injectable } from 'inversify'
 import { AuthService } from 'modules/auth/auth.service'
 import { AuthTokenDto, LoginDataDto } from 'modules/auth/dto'
 import { IUseCase } from 'utils/types'
+import { InvalidCredentialsException } from 'modules/auth/exceptions/invalid-credentials.exception'
 
 @injectable()
 export class LoginUseCase implements IUseCase<LoginDataDto, AuthTokenDto> {

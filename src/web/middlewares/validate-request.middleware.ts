@@ -3,8 +3,7 @@ import { ValidationError, validateSync } from 'class-validator'
 import { BaseMiddleware } from 'web/lib/base-middleware'
 import { ValidationException } from 'exceptions/validation.exception'
 import { ValidatorOptions } from 'class-validator'
-
-type Class<T = unknown> = { new (...args: unknown[]): T }
+import { Class } from 'utils/types'
 
 const validatorOptions: ValidatorOptions = {
   whitelist: true,
@@ -13,14 +12,16 @@ const validatorOptions: ValidatorOptions = {
   skipUndefinedProperties: true,
 }
 
-const formatValidationError = (e: ValidationError) => Object.values(e.constraints)
-
 export class ValidateRequestMiddleware extends BaseMiddleware {
   constructor(
     private readonly dtoClass: Class,
     private readonly withParams = false
   ) {
     super()
+  }
+
+  formatValidationError(e: ValidationError) {
+    return Object.values(e.constraints)
   }
 
   public execute(
@@ -36,7 +37,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
 
     const errors = validateSync(dto, validatorOptions)
     if (errors.length) {
-      throw new ValidationException(errors.flatMap(formatValidationError))
+      throw new ValidationException(errors.flatMap(this.formatValidationError))
     }
 
     req.body = dto

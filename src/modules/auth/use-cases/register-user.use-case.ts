@@ -1,12 +1,11 @@
-import { CreateUserDto } from 'modules/auth/dto'
-import { UserDto } from 'modules/user'
-import { UserAlreadyExistsException } from 'exceptions/user-already-exists.exception'
+import { AuthTokenDto, CreateUserDto } from 'modules/auth/dto'
+import { UserAlreadyExistsException } from 'modules/auth/exceptions/user-already-exists.exception'
 import { injectable } from 'inversify'
 import { AuthService } from 'modules/auth/auth.service'
 import { IUseCase } from 'utils/types'
 
 @injectable()
-export class RegisterUserUseCase implements IUseCase<CreateUserDto, UserDto> {
+export class RegisterUserUseCase implements IUseCase<CreateUserDto, AuthTokenDto> {
   constructor(
     private readonly authService: AuthService,
   ) {}
@@ -15,6 +14,8 @@ export class RegisterUserUseCase implements IUseCase<CreateUserDto, UserDto> {
     const existingUser = await this.authService.findUserByEmail(createUserDto.email)
     if (existingUser) throw new UserAlreadyExistsException()
 
-    return this.authService.createUser(createUserDto)
+    const newUser = await this.authService.createUser(createUserDto)
+
+    return this.authService.makeToken(newUser)
   }
 }
