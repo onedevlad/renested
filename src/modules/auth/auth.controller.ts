@@ -22,12 +22,12 @@ export class AuthController extends BaseController {
   @httpPost('/login', ValidateRequestMiddleware.with(LoginDataDto))
   @handleErrors([[InvalidCredentialsException, 403]])
   async login(req: Request<unknown, LoginDataDto>, res: Response) {
-    return this.executeUseCase(this.loginUseCase, req, res)
+    return this.executeUseCase(this.loginUseCase, req.body, res)
   }
 
   @httpPost('/register', ValidateRequestMiddleware.with(CreateUserDto))
   @handleErrors([[UserAlreadyExistsException, 422]])
   async register(req: Request<unknown, CreateUserDto>, res: Response) {
-    return this.executeUseCase(this.registerUserUseCase, req, res)
+    return this.executeUseCase(this.registerUserUseCase, req.body, res)
   }
 }

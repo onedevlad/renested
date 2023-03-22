@@ -11,4 +11,9 @@ export interface IException extends Error {
   errors?: string[]
 }
 
-export type Class<T = unknown> = new (...args: unknown[]) => T
+export type Class<T = object> = new (...args: unknown[]) => T
+
+export interface TokenPayload {
+  id: string
+  email: string
+}

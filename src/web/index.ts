@@ -2,31 +2,36 @@ import express from 'express'
 import morgan from 'morgan'
 
 import type { Container } from 'inversify'
-import { InversifyExpressServer } from "inversify-express-utils"
+import { InversifyExpressServer } from 'inversify-express-utils'
 
-import { Application, IAbstractApplicationOptions } from './lib/abstract-application'
+import {
+  Application,
+  IAbstractApplicationOptions,
+} from './lib/abstract-application'
 import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware'
 import { AppDataSource } from './persistance/dataSource'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
 
-import "modules/auth/auth.controller"
+import 'modules/auth/auth.controller'
+import 'modules/user/user.controller'
+
+import { AuthProvider } from './lib/auth-provider'
+import { initRequestContext } from './lib/request-context'
 
 class App extends Application {
   constructor() {
     super({
-      containerOptions: {
-        defaultScope: 'Singleton',
-      },
+      containerOptions: { /* defaultScope: 'Singleton', */ },
       dbOptions: {
-        host: process.env.POSTGRES_HOST,
-        port: +process.env.POSTGRES_PORT,
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
+        host: process.env.POSTGRES_HOST ?? '',
+        port: +(process.env.POSTGRES_PORT || 3000),
+        username: process.env.POSTGRES_USER ?? '',
+        password: process.env.POSTGRES_PASSWORD ?? '',
+        database: process.env.POSTGRES_DB ?? '',
       },
       logging: {
-        logLevel: process.env.LOG_LEVEL,
+        logLevel: process.env.LOG_LEVEL ?? '0',
       },
     })
   }
@@ -42,20 +47,30 @@ class App extends Application {
     const dataSource = this.container.get(AppDataSource)
     await dataSource.init(options.dbOptions)
 
-    const server = new InversifyExpressServer(this.container)
+    const server = new InversifyExpressServer(
+      this.container,
+      null,
+      null,
+      null,
+      AuthProvider
+    )
+
     const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger.logger)
 
-    server.setErrorConfig(app => app.use(errorHandlerMiddleware.execute))
+    server.setErrorConfig((app) => app.use(errorHandlerMiddleware.execute))
 
-    server.setConfig(app => {
+    server.setConfig((app) => {
       app.use(express.json())
       app.use(morgan('dev'))
+      app.use(initRequestContext({}))
     })
 
     const app = server.build()
 
     app.listen(process.env.APP_PORT, () =>
-      logger.logger.info(logger.box(`Listening on 0.0.0.0:${process.env.APP_PORT}`))
+      logger.logger.info(
+        logger.box(`Listening on 0.0.0.0:${process.env.APP_PORT}`)
+      )
     )
   }
 }

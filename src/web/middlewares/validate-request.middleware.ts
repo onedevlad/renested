@@ -21,7 +21,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
   }
 
   formatValidationError(e: ValidationError) {
-    return Object.values(e.constraints)
+    return Object.values(e.constraints || {})
   }
 
   public execute(

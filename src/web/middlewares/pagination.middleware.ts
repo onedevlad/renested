@@ -1,23 +1,27 @@
 import { NextFunction, Request, Response } from 'express'
 import { PaginationData } from 'utils/types'
 
-export type PaginatedResponse = Response<unknown, { pagination: PaginationData }>
+export type PaginatedResponse = Response<
+  unknown,
+  { pagination: PaginationData }
+>
 
 const MAX_LIMIT = 20
 
-const strToInt = (str: string, fallback: number) => isNaN(+str) ? fallback : +str
+const strToInt = (str: string, fallback: number) =>
+  isNaN(+str) ? fallback : +str
 
 export const PaginationMiddleware = (
   req: Request,
   res: PaginatedResponse,
-  next: NextFunction,
+  next: NextFunction
 ) => {
-  const offset = strToInt(req.query.offset?.toString(), 0)
+  const rawLimit = (req.query.limit ?? '').toString()
+  const rawOffset = (req.query.offset ?? '').toString()
 
-  const limit = Math.max(
-    strToInt(req.query.limit?.toString(), MAX_LIMIT),
-    MAX_LIMIT
-  )
+  const offset = strToInt(rawOffset, 0)
+
+  const limit = Math.max(strToInt(rawLimit, MAX_LIMIT), MAX_LIMIT)
 
   res.locals.pagination = {
     skip: offset,

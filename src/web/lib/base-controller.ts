@@ -1,16 +1,17 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { IUseCase } from 'utils/types'
 import { BaseHttpResponse } from './base-http-response'
 import { injectable } from 'inversify'
+import { BaseHttpController } from 'inversify-express-utils'
 
 @injectable()
-export abstract class BaseController {
-  async executeUseCase<InputDto, OutputDto>(
+export class BaseController extends BaseHttpController {
+  protected async executeUseCase<InputDto, OutputDto>(
     useCase: IUseCase<InputDto, OutputDto>,
-    req: Request<unknown, InputDto>,
+    input: InputDto,
     res: Response
   ) {
-    const result = await useCase.execute(req.body)
+    const result = await useCase.execute(input)
     res.json(BaseHttpResponse.success(result))
   }
 }

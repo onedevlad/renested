@@ -7,21 +7,27 @@ import { PasswordService } from 'services/password/password.service'
 
 import { modules as authModules } from 'modules/auth'
 import { modules as userModules } from 'modules/user'
+import { AuthMiddleware } from 'web/middlewares/auth.middleware'
 
 const makeBind =
   (container: Container) =>
     <T>(module: interfaces.ServiceIdentifier<T>) =>
-      container.bind(module).toSelf()
+      container.bind(module).toSelf().inSingletonScope()
 
 export class AppContainer {
   static init(container: Container) {
     const bind = makeBind(container)
 
-    bind(Logger)
-    bind(AppDataSource)
-    bind(TokenService)
-    bind(PasswordService)
+    const sharedModules = [
+      Logger,
+      AppDataSource,
+      AuthMiddleware,
+      TokenService,
+      PasswordService,
+    ]
 
-    ;[authModules, userModules].flat().forEach(bind)
+    const modules = [sharedModules, authModules, userModules]
+
+    modules.flat().forEach(bind)
   }
 }
