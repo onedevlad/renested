@@ -22,4 +22,8 @@ export class UserRepository {
     const users = await this.repository.find(paginationData)
     return UserDto.fromMany(users)
   }
+
+  async deleteUser(id: number) {
+    await this.repository.delete({ id })
+  }
 }

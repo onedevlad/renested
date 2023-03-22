@@ -9,4 +9,8 @@ export class UserService {
   async listAllUsers(paginationData: PaginationData) {
     return this.userRepository.listAll(paginationData)
   }
+
+  async deleteUser(id: number) {
+    return this.userRepository.deleteUser(id)
+  }
 }
