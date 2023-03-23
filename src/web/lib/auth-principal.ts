@@ -1,3 +1,4 @@
+import { UnauthorizedException } from 'exceptions/unauthorized.exception'
 import { interfaces } from 'inversify-express-utils'
 import { TokenPayload } from 'utils/types'
 
@@ -13,4 +14,9 @@ export class Principal implements interfaces.Principal {
 
   public async isResourceOwner() { return false }
   public async isInRole() { return false }
+
+  public getUserId() {
+    if (!this.details) throw new UnauthorizedException()
+    return this.details.id
+  }
 }

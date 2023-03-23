@@ -41,7 +41,7 @@ export class UserController extends BaseController {
     ValidateRequestMiddleware.withParams(DeleteUserRequestDto)
   )
   async deleteUser(@requestParam('id') id: string, @response() res: Response) {
-    const myUserId: number = this.httpContext.user.details.id
+    const myUserId = this.httpContext.user.getUserId()
 
     const dto = new DeleteUserDto({ id: +id, myUserId })
     return this.executeUseCase(this.deleteUserUseCase, dto, res)

@@ -13,7 +13,9 @@ export interface IException extends Error {
 
 export type Class<T = object> = new (...args: unknown[]) => T
 
+export type UserId = number
+
 export interface TokenPayload {
-  id: string
+  id: UserId
   email: string
 }

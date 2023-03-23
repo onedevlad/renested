@@ -2,10 +2,16 @@ import { Response } from 'express'
 import { IUseCase } from 'utils/types'
 import { BaseHttpResponse } from './base-http-response'
 import { injectable } from 'inversify'
-import { BaseHttpController } from 'inversify-express-utils'
+import { BaseHttpController, HttpContext } from 'inversify-express-utils'
+import { Principal } from './auth-principal'
+
+interface PrincipalHttpContext extends HttpContext {
+  user: Principal
+}
 
 @injectable()
 export class BaseController extends BaseHttpController {
+  protected readonly httpContext: PrincipalHttpContext
   protected async executeUseCase<InputDto, OutputDto>(
     useCase: IUseCase<InputDto, OutputDto>,
     input: InputDto,
