@@ -1,9 +1,13 @@
-import { injectable } from "inversify"
-import winston from "winston"
+import { injectable } from 'inversify'
+import winston, { transports, format } from 'winston'
 
 interface ILoggerOptions {
   logLevel: string
 }
+
+const customFormat = format.printf(({ level, message, timestamp }) => {
+  return `${timestamp} ${level}: ${message}`
+})
 
 @injectable()
 export class Logger {
@@ -11,18 +15,13 @@ export class Logger {
 
   init({ logLevel }: ILoggerOptions) {
     this._logger = winston.createLogger({
-      level: logLevel.toString(),
-      levels: winston.config.syslog.levels,
-      transports: [
-        new winston.transports.Console({
-          level: "debug",
-          format: winston.format.combine(
-            winston.format.json(),
-            winston.format.colorize(),
-            winston.format.simple(),
-          )
-        })
-      ]
+      level: logLevel,
+      format: format.combine(
+        format.timestamp({ format: 'HH:mm:ss:SSS' }),
+        format.colorize(),
+        customFormat
+      ),
+      transports: [new transports.Console()],
     })
   }
 
@@ -36,7 +35,7 @@ export class Logger {
     const width = paddedMsg.length
 
     const horizonalAddornment = `+${'-'.repeat(width)}+`
-    const content = '\n' + lines.map(l => `|${l}|`).join('\n') + '\n'
+    const content = '\n' + lines.map((l) => `|${l}|`).join('\n') + '\n'
     return `\n\n${horizonalAddornment}${content}${horizonalAddornment}\n`
   }
 
