@@ -8,6 +8,7 @@ import { PasswordService } from 'services/password/password.service'
 import { modules as authModules } from 'modules/auth'
 import { modules as userModules } from 'modules/user'
 import { AuthMiddleware } from 'web/middlewares/auth.middleware'
+import { PaginationMiddleware } from 'web/middlewares/pagination.middleware'
 
 const makeBind =
   (container: Container) =>
@@ -22,6 +23,7 @@ export class AppContainer {
       Logger,
       AppDataSource,
       AuthMiddleware,
+      PaginationMiddleware,
       TokenService,
       PasswordService,
     ]
