@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm"
 import { injectable } from "inversify"
 import { Logger } from "services/logger"
+import { entitiesPath } from "./entities"
 
 interface IDbConnectionOptions {
   host: string
@@ -23,7 +24,7 @@ export class AppDataSource {
     const dataSource = new DataSource({
       type: "postgres",
       synchronize: true,
-      entities: ["src/modules/**/*.entity.ts"],
+      entities: [entitiesPath],
       entityPrefix: 'app_',
       ...connectionOptions
     })
