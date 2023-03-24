@@ -17,11 +17,7 @@ export class RegisterUserUseCase implements IUseCase<CreateUserDto, AuthTokenDto
 
   private async createUser(createUserDto: CreateUserDto) {
     const passwordHash = await this.passwordService.hash(createUserDto.password)
-    const newUserDto: CreateUserDto = Object.assign(
-      new CreateUserDto(),
-      createUserDto,
-      { password: passwordHash }
-    )
+    const newUserDto = CreateUserDto.from({ ...createUserDto, password: passwordHash })
 
     return this.authRepository.create(newUserDto)
   }

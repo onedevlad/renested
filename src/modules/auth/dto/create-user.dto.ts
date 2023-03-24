@@ -12,4 +12,8 @@ export class CreateUserDto {
 
   @Length(8, 100, { message: "Invalid password" })
   password: string
+
+  static from(createUserDto: CreateUserDto) {
+    return Object.assign(new CreateUserDto(), createUserDto)
+  }
 }
