@@ -13,9 +13,6 @@ import { AppDataSource } from './persistance/dataSource'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
 
-import 'modules/auth/auth.controller'
-import 'modules/user/user.controller'
-
 import { AuthProvider } from './lib/auth-provider'
 import { initRequestContext } from './lib/request-context'
 

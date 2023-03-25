@@ -5,8 +5,8 @@ import { AppDataSource } from 'web/persistance/dataSource'
 import { TokenService } from 'services/token/token.service'
 import { PasswordService } from 'services/password/password.service'
 
-import { modules as authModules } from 'modules/auth'
-import { modules as userModules } from 'modules/user'
+import { AuthModule } from 'modules/auth/auth.module'
+import { UserModule } from 'modules/user/user.module'
 import { AuthMiddleware } from 'web/middlewares/auth.middleware'
 import { PaginationMiddleware } from 'web/middlewares/pagination.middleware'
 
@@ -19,7 +19,7 @@ export class AppContainer {
   static init(container: Container) {
     const bind = makeBind(container)
 
-    const sharedModules = [
+    const sharedModules: interfaces.ServiceIdentifier[] = [
       Logger,
       AppDataSource,
       AuthMiddleware,
@@ -28,8 +28,9 @@ export class AppContainer {
       PasswordService,
     ]
 
-    const modules = [sharedModules, authModules, userModules]
+    sharedModules.forEach(bind)
 
-    modules.flat().forEach(bind)
+    container.load(new AuthModule())
+    container.load(new UserModule())
   }
 }

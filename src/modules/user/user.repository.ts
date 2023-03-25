@@ -2,7 +2,8 @@ import { injectable } from 'inversify'
 import type { Repository } from 'typeorm'
 
 import { AppDataSource } from 'web/persistance/dataSource'
-import { UserEntity, UserDto } from 'modules/user'
+import { User as UserEntity } from './user.entity'
+import { UserDto } from './dto/user.dto'
 import { PaginationData } from 'utils/types'
 
 @injectable()
