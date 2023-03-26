@@ -11,17 +11,14 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
     "outDir": "./build",
     "baseUrl": ".",
     "paths": {
       "config/*": ["src/config/*"],
-      "dtos/*": ["src/dtos/*"],
-      "entities/*": ["src/entities/*"],
       "exceptions/*": ["src/exceptions/*"],
       "modules/*": ["src/modules/*"],
-      "repositories/*": ["src/repositories/*"],
       "services/*": ["src/services/*"],
-      "use-cases/*": ["src/use-cases/*"],
       "utils/*": ["src/utils/*"],
       "web/*": ["src/web/*"]
     }

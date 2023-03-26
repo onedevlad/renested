@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
 import { controller, httpPost } from 'inversify-express-utils'
 

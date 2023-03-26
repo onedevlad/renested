@@ -10,7 +10,7 @@ export class AuthRepository {
   private repository: Repository<UserEntity>
 
   constructor(appDataSource: AppDataSource) {
-    this.repository = appDataSource.dataSource.getRepository(UserEntity)
+    this.repository = appDataSource.getRepository(UserEntity)
   }
 
   async findByEmail(email: string) {

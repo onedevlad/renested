@@ -29,6 +29,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
     _res: Response,
     next: NextFunction
   ): void | Promise<void> {
+    console.log('VALIDATING')
     const body = this.withParams
       ? { ...req.body, ...req.params }
       : req.body

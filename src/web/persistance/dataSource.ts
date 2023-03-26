@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm"
+import { DataSource, EntityTarget, ObjectLiteral } from "typeorm"
 import { injectable } from "inversify"
 import { Logger } from "services/logger"
 import { entitiesPath } from "./entities"
@@ -40,5 +40,9 @@ export class AppDataSource {
 
   get dataSource() {
     return this._dataSource
+  }
+
+  public getRepository<Entity extends ObjectLiteral, Target extends EntityTarget<Entity>>(target: Target) {
+    return this._dataSource.getRepository(target)
   }
 }
