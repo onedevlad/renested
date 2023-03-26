@@ -9,7 +9,6 @@ const validatorOptions: ValidatorOptions = {
   whitelist: true,
   forbidNonWhitelisted: false,
   forbidUnknownValues: false,
-  skipUndefinedProperties: true,
 }
 
 export class ValidateRequestMiddleware extends BaseMiddleware {
@@ -21,7 +20,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
   }
 
   formatValidationError(e: ValidationError) {
-    return Object.values(e.constraints || {})
+    return e.constraints ? Object.values(e.constraints) : []
   }
 
   public execute(
@@ -29,10 +28,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
     _res: Response,
     next: NextFunction
   ): void | Promise<void> {
-    console.log('VALIDATING')
-    const body = this.withParams
-      ? { ...req.body, ...req.params }
-      : req.body
+    const body = this.withParams ? { ...req.body, ...req.params } : req.body
 
     const dto = Object.assign(new this.dtoClass(), body)
 

@@ -4,6 +4,7 @@ const jestConfig: JestConfigWithTsJest = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   rootDir: './src',
+  verbose: true,
   moduleNameMapper: {
     "^config/(.*)$": "<rootDir>/config/$1",
     "^exceptions/(.*)$": "<rootDir>/exceptions/$1",

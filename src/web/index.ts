@@ -1,25 +1,21 @@
-import express from 'express'
 import morgan from 'morgan'
-
-import type { Container } from 'inversify'
-import { InversifyExpressServer } from 'inversify-express-utils'
+import { Container } from 'inversify'
 
 import {
   Application,
   IAbstractApplicationOptions,
 } from './lib/abstract-application'
-import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware'
 import { AppDataSource } from './persistance/dataSource'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
-
-import { AuthProvider } from './lib/auth-provider'
-import { initRequestContext } from './lib/request-context'
+import { setupServer } from './setupServer'
 
 class App extends Application {
   constructor() {
     super({
-      containerOptions: { /* defaultScope: 'Singleton', */ },
+      containerOptions: {
+        /* defaultScope: 'Singleton', */
+      },
       dbOptions: {
         host: process.env.POSTGRES_HOST ?? '',
         port: +(process.env.POSTGRES_PORT || 3000),
@@ -44,25 +40,11 @@ class App extends Application {
     const dataSource = this.container.get(AppDataSource)
     await dataSource.init(options.dbOptions)
 
-    const server = new InversifyExpressServer(
-      this.container,
-      null,
-      null,
-      null,
-      AuthProvider
-    )
-
-    const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger.logger)
-
-    server.setErrorConfig((app) => app.use(errorHandlerMiddleware.execute))
-
-    server.setConfig((app) => {
-      app.use(express.json())
-      app.use(morgan('dev'))
-      app.use(initRequestContext({}))
+    const app = setupServer({
+      container: this.container,
+      logger: logger.logger,
+      setConfig: app => app.use(morgan('dev'))
     })
-
-    const app = server.build()
 
     app.listen(process.env.APP_PORT, () =>
       logger.logger.info(

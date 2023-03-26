@@ -6,8 +6,8 @@ import { ValidationException, HttpException, UnauthorizedException } from 'excep
 export class ErrorHandlerMiddleware {
   constructor(private readonly logger: Logger['logger']) {}
 
-  sendResponse(res: Response, error: Error, statusCode: number) {
-    const response = BaseHttpResponse.error(error.message, statusCode)
+  sendResponse(res: Response, msg: string | string[], statusCode: number) {
+    const response = BaseHttpResponse.error(msg, statusCode)
     return res.status(response.statusCode).json(response)
   }
 
@@ -16,19 +16,19 @@ export class ErrorHandlerMiddleware {
     if (err instanceof HttpException) {
       const { error, statusCode } = err
 
-      return this.sendResponse(res, error, statusCode)
+      return this.sendResponse(res, error.message, statusCode)
     }
 
     if (err instanceof UnauthorizedException) {
-      return this.sendResponse(res, err, 403)
+      return this.sendResponse(res, err.message, 403)
     }
 
     if (err instanceof ValidationException) {
-      return this.sendResponse(res, err, 422)
+      return this.sendResponse(res, err.msgs, 422)
     }
 
     console.log(err) // TODO: make winston log errors 
 
-    return this.sendResponse(res, err, 500)
+    return this.sendResponse(res, err.message, 500)
   }
 }
