@@ -1,4 +1,4 @@
-import { IException } from "utils/types"
+import { IException } from 'utils/types'
 
 export class HttpException {
   constructor(

@@ -5,7 +5,7 @@ import { UserRepository } from 'modules/user/user.repository'
 
 @injectable()
 export class ListUsersUseCase implements IUseCase<PaginationData, UserDto[]> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
 
   async execute(paginationData: PaginationData): Promise<UserDto[]> {
     return this.userRepository.listAll(paginationData)

@@ -15,7 +15,8 @@ export const handleErrors =
           if (!errorMap) throw caughtError
 
           for (const [err, code] of errorMap) {
-            if (caughtError instanceof err) throw new HttpException(caughtError, code)
+            if (caughtError instanceof err)
+              throw new HttpException(caughtError, code)
           }
 
           throw caughtError

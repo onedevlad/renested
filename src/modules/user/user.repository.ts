@@ -15,8 +15,8 @@ export class UserRepository {
   }
 
   async findByEmail(email: string) {
-   const user = await this.repository.findOneBy({ email })
-   return user || null
+    const user = await this.repository.findOneBy({ email })
+    return user || null
   }
 
   async listAll(paginationData: PaginationData) {

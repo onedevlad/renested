@@ -1,5 +1,5 @@
-import { injectable } from "inversify"
-import bcrypt from "bcrypt"
+import { injectable } from 'inversify'
+import bcrypt from 'bcrypt'
 
 const SALT_ROUNDS = 8
 

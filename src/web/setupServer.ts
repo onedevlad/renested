@@ -34,7 +34,7 @@ export const setupServer = ({
 
   const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger)
 
-  server.setErrorConfig(app => {
+  server.setErrorConfig((app) => {
     app.use(errorHandlerMiddleware.execute)
     setErrorConfig(app)
     return app

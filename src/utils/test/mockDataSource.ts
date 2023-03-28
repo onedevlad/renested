@@ -3,11 +3,11 @@ import { ObjectLiteral, Repository } from 'typeorm'
 import { AppDataSource } from 'web/persistance/dataSource'
 
 export const makeMockDataSource = <R extends Repository<ObjectLiteral>>(
-  repository: R
+  repository?: R
 ) => {
   const dataSource = mock<AppDataSource>()
 
-  dataSource.getRepository.mockReturnValue(repository)
+  if (repository) dataSource.getRepository.mockReturnValue(repository)
 
   return dataSource
 }

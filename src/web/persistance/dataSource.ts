@@ -1,7 +1,7 @@
-import { DataSource, EntityTarget, ObjectLiteral } from "typeorm"
-import { injectable } from "inversify"
-import { Logger } from "services/logger"
-import { entitiesPath } from "./entities"
+import { DataSource, EntityTarget, ObjectLiteral } from 'typeorm'
+import { injectable } from 'inversify'
+import { Logger } from 'services/logger'
+import { entitiesPath } from './entities'
 
 interface IDbConnectionOptions {
   host: string
@@ -22,18 +22,18 @@ export class AppDataSource {
 
   async init(connectionOptions: IDbConnectionOptions) {
     const dataSource = new DataSource({
-      type: "postgres",
+      type: 'postgres',
       synchronize: true,
       entities: [entitiesPath],
       entityPrefix: 'app_',
-      ...connectionOptions
+      ...connectionOptions,
     })
 
     try {
       this._dataSource = await dataSource.initialize()
-      this.logger.info("Data Source has been initialized!")
-    } catch(e) {
-      this.logger.error("Error during Data Source initialization", e)
+      this.logger.info('Data Source has been initialized!')
+    } catch (e) {
+      this.logger.error('Error during Data Source initialization', e)
       throw e
     }
   }
@@ -42,7 +42,10 @@ export class AppDataSource {
     return this._dataSource
   }
 
-  public getRepository<Entity extends ObjectLiteral, Target extends EntityTarget<Entity>>(target: Target) {
+  public getRepository<
+    Entity extends ObjectLiteral,
+    Target extends EntityTarget<Entity>
+  >(target: Target) {
     return this._dataSource.getRepository(target)
   }
 }

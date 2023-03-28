@@ -6,7 +6,7 @@ import { UserRepository } from 'modules/user/user.repository'
 
 @injectable()
 export class DeleteUserUseCase implements IUseCase<DeleteUserDto, void> {
-  constructor(private readonly userRespository: UserRepository) {}
+  constructor(private readonly userRespository: UserRepository) { }
 
   async execute(req: DeleteUserDto): Promise<void> {
     if (req.id !== req.myUserId) throw new UnauthorizedException()

@@ -15,11 +15,7 @@ export class PaginationMiddleware extends BaseMiddleware {
   private strToInt = (str: string, fallback: number) =>
     isNaN(+str) ? fallback : +str
 
-  handler(
-    req: Request,
-    res: PaginatedResponse,
-    next: NextFunction
-  ) {
+  handler(req: Request, res: PaginatedResponse, next: NextFunction) {
     const rawLimit = (req.query.limit ?? '').toString()
     const rawOffset = (req.query.offset ?? '').toString()
 

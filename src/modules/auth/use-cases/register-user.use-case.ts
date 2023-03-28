@@ -8,16 +8,21 @@ import { TokenService } from 'services/token/token.service'
 import { User } from 'modules/user/user.entity'
 
 @injectable()
-export class RegisterUserUseCase implements IUseCase<CreateUserDto, AuthTokenDto> {
+export class RegisterUserUseCase
+  implements IUseCase<CreateUserDto, AuthTokenDto>
+{
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly passwordService: PasswordService,
-    private readonly tokenService: TokenService,
-  ) {}
+    private readonly tokenService: TokenService
+  ) { }
 
   private async createUser(createUserDto: CreateUserDto) {
     const passwordHash = await this.passwordService.hash(createUserDto.password)
-    const newUserDto = CreateUserDto.from({ ...createUserDto, password: passwordHash })
+    const newUserDto = CreateUserDto.from({
+      ...createUserDto,
+      password: passwordHash,
+    })
 
     return this.authRepository.create(newUserDto)
   }
@@ -27,7 +32,9 @@ export class RegisterUserUseCase implements IUseCase<CreateUserDto, AuthTokenDto
   }
 
   async execute(createUserDto: CreateUserDto) {
-    const existingUser = await this.authRepository.findByEmail(createUserDto.email)
+    const existingUser = await this.authRepository.findByEmail(
+      createUserDto.email
+    )
     if (existingUser) throw new UserAlreadyExistsException()
 
     const newUser = await this.createUser(createUserDto)

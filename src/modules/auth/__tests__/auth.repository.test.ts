@@ -8,7 +8,7 @@ import { Repository } from 'typeorm'
 import { User as UserEntity } from 'modules/user/user.entity'
 import { CreateUserDto } from '../dto'
 
-import { makeMockDataSource } from 'utils/test/mockDataSource' 
+import { makeMockDataSource } from 'utils/test/mockDataSource'
 
 const setup = () => {
   const mockUserRepository = mock<Repository<UserEntity>>()
@@ -23,7 +23,7 @@ const setup = () => {
 }
 
 describe('Auth Repository', () => {
-  it("Should find users by email", async () => {
+  it('Should find users by email', async () => {
     const { authRepository, mockUserRepository } = setup()
 
     const user = new UserEntity()
@@ -34,20 +34,20 @@ describe('Auth Repository', () => {
     expect(actual).toEqual(user)
   })
 
-  it("Should handle non-existent users", async () => {
+  it('Should handle non-existent users', async () => {
     const { authRepository, mockUserRepository } = setup()
     const user = null
     mockUserRepository.findOneBy.mockResolvedValue(user)
 
-    const actual = await authRepository.findByEmail("")
+    const actual = await authRepository.findByEmail('')
     expect(actual).toEqual(user)
   })
 
-  it("Should create a new user", async () => {
+  it('Should create a new user', async () => {
     const { authRepository, mockUserRepository } = setup()
     const createUserDto = new CreateUserDto()
     const userEntity = new UserEntity()
-    
+
     mockUserRepository.save.mockResolvedValue(userEntity)
 
     const actual = await authRepository.create(createUserDto)

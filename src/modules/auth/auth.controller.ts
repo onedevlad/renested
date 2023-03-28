@@ -17,7 +17,9 @@ export class AuthController extends BaseController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUserUseCase: RegisterUserUseCase
-  ) { super() }
+  ) {
+    super()
+  }
 
   @httpPost('/login', ValidateRequestMiddleware.with(LoginDataDto))
   @handleErrors([[InvalidCredentialsException, 403]])

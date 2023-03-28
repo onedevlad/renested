@@ -11,7 +11,7 @@ export class LoginUseCase implements IUseCase<LoginDataDto, AuthTokenDto> {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly passwordService: PasswordService,
-    private readonly tokenService: TokenService,
+    private readonly tokenService: TokenService
   ) { }
 
   async execute(loginData: LoginDataDto): Promise<AuthTokenDto> {

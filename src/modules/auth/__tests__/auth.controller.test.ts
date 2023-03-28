@@ -3,10 +3,7 @@ import supertest from 'supertest'
 
 import { createTestingModule } from 'utils/test/create-testing-module'
 import { AuthModule } from '../auth.module'
-import { Repository } from 'typeorm'
-import { User as UserEntity } from 'modules/user/user.entity'
 
-import { makeMockDataSource } from 'utils/test/mockDataSource'
 import { createTestingServer } from 'utils/test/create-testing-server'
 import { LoginUseCase } from '../use-cases/login.use-case'
 import { RegisterUserUseCase } from '../use-cases/register-user.use-case'
@@ -19,15 +16,12 @@ const loginUseCase = mock<LoginUseCase>()
 const registerUserUseCase = mock<RegisterUserUseCase>()
 
 const setup = () => {
-  const mockUserRepository = mock<Repository<UserEntity>>()
-  const mockDataSource = makeMockDataSource(mockUserRepository)
-
   const container = createTestingModule(AuthModule)
   container.rebind(LoginUseCase).toConstantValue(loginUseCase)
   container.rebind(RegisterUserUseCase).toConstantValue(registerUserUseCase)
-  const app = createTestingServer(container, mockDataSource)
+  const app = createTestingServer(container)
 
-  return { app, mockUserRepository }
+  return { app }
 }
 
 describe('Auth controller', () => {

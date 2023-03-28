@@ -1,10 +1,14 @@
 import { NextFunction, type Request, type Response } from 'express'
 import { BaseHttpResponse } from 'web/lib/base-http-response'
 import { Logger } from 'services/logger'
-import { ValidationException, HttpException, UnauthorizedException } from 'exceptions/index'
+import {
+  ValidationException,
+  HttpException,
+  UnauthorizedException,
+} from 'exceptions/index'
 
 export class ErrorHandlerMiddleware {
-  constructor(private readonly logger: Logger['logger']) {}
+  constructor(private readonly logger: Logger['logger']) { }
 
   sendResponse(res: Response, msg: string | string[], statusCode: number) {
     const response = BaseHttpResponse.error(msg, statusCode)
@@ -27,7 +31,7 @@ export class ErrorHandlerMiddleware {
       return this.sendResponse(res, err.msgs, 422)
     }
 
-    console.log(err) // TODO: make winston log errors 
+    console.log(err) // TODO: make winston log errors
 
     return this.sendResponse(res, err.message, 500)
   }
