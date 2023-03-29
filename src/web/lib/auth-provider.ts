@@ -12,9 +12,10 @@ export class AuthProvider implements interfaces.AuthProvider {
 
   public async getUser(req: Request): Promise<interfaces.Principal> {
     const token = req.headers.authorization ?? ''
-    const user = this.tokenService.parseToken(token)
+    const user = token
+      ? this.tokenService.validateToken(token)
+      : null
 
-    const principal = new Principal(user)
-    return principal
+    return new Principal(user)
   }
 }

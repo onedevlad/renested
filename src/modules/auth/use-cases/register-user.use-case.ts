@@ -5,7 +5,7 @@ import { IUseCase } from 'utils/types'
 import { PasswordService } from 'services/password/password.service'
 import { AuthRepository } from '../auth.repository'
 import { TokenService } from 'services/token/token.service'
-import { User } from 'modules/user/user.entity'
+import { UserEntity } from 'modules/user/user.entity'
 
 @injectable()
 export class RegisterUserUseCase
@@ -19,15 +19,15 @@ export class RegisterUserUseCase
 
   private async createUser(createUserDto: CreateUserDto) {
     const passwordHash = await this.passwordService.hash(createUserDto.password)
-    const newUserDto = CreateUserDto.from({
+    const newUserDto: CreateUserDto = {
       ...createUserDto,
       password: passwordHash,
-    })
+    }
 
     return this.authRepository.create(newUserDto)
   }
 
-  private createToken(user: User) {
+  private createToken(user: UserEntity) {
     return new AuthTokenDto(this.tokenService.createToken(user))
   }
 

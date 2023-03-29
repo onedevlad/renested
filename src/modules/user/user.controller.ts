@@ -43,7 +43,7 @@ export class UserController extends BaseController {
   async deleteUser(@requestParam('id') id: string, @response() res: Response) {
     const myUserId = this.httpContext.user.getUserId()
 
-    const dto = new DeleteUserDto({ id: +id, myUserId })
+    const dto = DeleteUserDto.from({ id: +id, myUserId })
     return this.executeUseCase(this.deleteUserUseCase, dto, res)
   }
 }

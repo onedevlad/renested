@@ -16,12 +16,12 @@ export class PaginationMiddleware extends BaseMiddleware {
     isNaN(+str) ? fallback : +str
 
   handler(req: Request, res: PaginatedResponse, next: NextFunction) {
-    const rawLimit = (req.query.limit ?? '').toString()
-    const rawOffset = (req.query.offset ?? '').toString()
+    const rawLimit = (req.query.take ?? '').toString()
+    const rawOffset = (req.query.skip ?? '').toString()
 
     const offset = this.strToInt(rawOffset, 0)
 
-    const limit = Math.max(this.strToInt(rawLimit, MAX_LIMIT), MAX_LIMIT)
+    const limit = Math.min(this.strToInt(rawLimit, MAX_LIMIT), MAX_LIMIT)
 
     res.locals.pagination = {
       skip: offset,

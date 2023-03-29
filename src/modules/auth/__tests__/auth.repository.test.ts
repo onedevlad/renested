@@ -1,11 +1,9 @@
 import { mock } from 'jest-mock-extended'
-
-import { createTestingModule } from 'utils/test/create-testing-module'
-import { AuthModule } from '../auth.module'
+import { Container } from 'inversify'
+import { Repository } from 'typeorm'
 import { AuthRepository } from '../auth.repository'
 import { AppDataSource } from 'web/persistance/dataSource'
-import { Repository } from 'typeorm'
-import { User as UserEntity } from 'modules/user/user.entity'
+import { UserEntity } from 'modules/user/user.entity'
 import { CreateUserDto } from '../dto'
 
 import { makeMockDataSource } from 'utils/test/mockDataSource'
@@ -14,10 +12,11 @@ const setup = () => {
   const mockUserRepository = mock<Repository<UserEntity>>()
   const mockDataSource = makeMockDataSource(mockUserRepository)
 
-  const moduleRef = createTestingModule(AuthModule)
-  moduleRef.bind(AppDataSource).toConstantValue(mockDataSource)
+  const container = new Container()
+  container.bind(AuthRepository).toSelf()
+  container.bind(AppDataSource).toConstantValue(mockDataSource)
 
-  const authRepository = moduleRef.get(AuthRepository)
+  const authRepository = container.get(AuthRepository)
 
   return { authRepository, mockUserRepository }
 }

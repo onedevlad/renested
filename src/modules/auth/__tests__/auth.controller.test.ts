@@ -1,9 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import supertest from 'supertest'
 
-import { createTestingModule } from 'utils/test/create-testing-module'
-import { AuthModule } from '../auth.module'
-
 import { createTestingServer } from 'utils/test/create-testing-server'
 import { LoginUseCase } from '../use-cases/login.use-case'
 import { RegisterUserUseCase } from '../use-cases/register-user.use-case'
@@ -11,14 +8,19 @@ import {
   InvalidCredentialsException,
   UserAlreadyExistsException,
 } from '../exceptions'
+import { AuthController } from '../auth.controller'
+import { Container } from 'inversify'
 
 const loginUseCase = mock<LoginUseCase>()
 const registerUserUseCase = mock<RegisterUserUseCase>()
 
 const setup = () => {
-  const container = createTestingModule(AuthModule)
-  container.rebind(LoginUseCase).toConstantValue(loginUseCase)
-  container.rebind(RegisterUserUseCase).toConstantValue(registerUserUseCase)
+  const container = new Container()
+
+  container.bind(AuthController).toSelf()
+  container.bind(LoginUseCase).toConstantValue(loginUseCase)
+  container.bind(RegisterUserUseCase).toConstantValue(registerUserUseCase)
+
   const app = createTestingServer(container)
 
   return { app }
@@ -30,6 +32,7 @@ describe('Auth controller', () => {
       const { app } = setup()
 
       const res = await supertest(app).post('/auth/login').send({})
+      loginUseCase.execute.mockResolvedValue({ token: '' })
       const { data, statusCode, errors } = res.body
 
       expect(data).toBe(null)

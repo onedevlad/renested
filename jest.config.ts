@@ -13,6 +13,7 @@ const jestConfig: JestConfigWithTsJest = {
     "^utils/(.*)$": "<rootDir>/utils/$1",
     "^web/(.*)$": "<rootDir>/web/$1",
   },
+  setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 }
 

@@ -1,4 +1,4 @@
-import { User as UserEntity } from "modules/user/user.entity"
+import { UserEntity } from "modules/user/user.entity"
 
 export class UserDto {
   id: number
@@ -6,7 +6,7 @@ export class UserDto {
   lastName: string
   email: string
 
-  static from(user: UserEntity) {
+  static from(user: UserEntity): UserDto {
     const dto = new UserDto()
 
     dto.id = user.id
