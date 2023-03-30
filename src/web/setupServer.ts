@@ -11,7 +11,7 @@ import { initRequestContext } from './lib/request-context'
 
 interface SetupServerParams {
   container: Container
-  logger: Logger['logger']
+  logger: Logger
   setErrorConfig?: (app: ExpressApp) => void
   setConfig?: (app: ExpressApp) => void
 }

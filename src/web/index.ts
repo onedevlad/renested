@@ -5,7 +5,7 @@ import {
   Application,
   IAbstractApplicationOptions,
 } from './lib/abstract-application'
-import { AppDataSource } from './persistance/dataSource'
+import { DataSource } from './persistance/data-source'
 import { Logger } from 'services/logger'
 import { AppContainer } from 'config/container'
 import { setupServer } from './setupServer'
@@ -37,19 +37,17 @@ class App extends Application {
     const logger = this.container.get(Logger)
     logger.init({ logLevel: options.logging.logLevel })
 
-    const dataSource = this.container.get(AppDataSource)
+    const dataSource = this.container.get(DataSource)
     await dataSource.init(options.dbOptions)
 
     const app = setupServer({
       container: this.container,
-      logger: logger.logger,
-      setConfig: app => app.use(morgan('dev'))
+      logger,
+      setConfig: (app) => app.use(morgan('dev')),
     })
 
     app.listen(process.env.APP_PORT, () =>
-      logger.logger.info(
-        logger.box(`Listening on 0.0.0.0:${process.env.APP_PORT}`)
-      )
+      logger.info(logger.box(`Listening on 0.0.0.0:${process.env.APP_PORT}`))
     )
   }
 }

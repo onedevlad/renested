@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import type { Repository } from 'typeorm'
 
-import { AppDataSource } from 'web/persistance/dataSource'
+import { DataSource } from 'web/persistance/data-source'
 import { UserEntity } from 'modules/user/user.entity'
 import { CreateUserDto } from './dto'
 
@@ -9,7 +9,7 @@ import { CreateUserDto } from './dto'
 export class AuthRepository {
   private repository: Repository<UserEntity>
 
-  constructor(appDataSource: AppDataSource) {
+  constructor(appDataSource: DataSource) {
     this.repository = appDataSource.getRepository(UserEntity)
   }
 

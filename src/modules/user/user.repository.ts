@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import type { Repository } from 'typeorm'
 
-import { AppDataSource } from 'web/persistance/dataSource'
+import { DataSource } from 'web/persistance/data-source'
 import { UserEntity } from './user.entity'
 import { UserDto } from './dto/user.dto'
 import { PaginationData } from 'utils/types'
@@ -10,7 +10,7 @@ import { PaginationData } from 'utils/types'
 export class UserRepository {
   private repository: Repository<UserEntity>
 
-  constructor(appDataSource: AppDataSource) {
+  constructor(appDataSource: DataSource) {
     this.repository = appDataSource.dataSource.getRepository(UserEntity)
   }
 

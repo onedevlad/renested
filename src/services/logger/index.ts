@@ -5,16 +5,16 @@ interface ILoggerOptions {
   logLevel: string
 }
 
-const customFormat = format.printf(({ level, message, timestamp }) => {
-  return `${timestamp} ${level}: ${message}`
-})
+const customFormat = format.printf(
+  ({ level, message, timestamp }) => `${timestamp} ${level}: ${message}`
+)
 
 @injectable()
 export class Logger {
-  private _logger: winston.Logger
+  private logger: winston.Logger
 
   init({ logLevel }: ILoggerOptions) {
-    this._logger = winston.createLogger({
+    this.logger = winston.createLogger({
       level: logLevel,
       format: format.combine(
         format.timestamp({ format: 'HH:mm:ss:SSS' }),
@@ -35,11 +35,17 @@ export class Logger {
     const width = paddedMsg.length
 
     const horizonalAddornment = `+${'-'.repeat(width)}+`
-    const content = '\n' + lines.map((l) => `|${l}|`).join('\n') + '\n'
+    const content = '\n' + lines.map(l => `|${l}|`).join('\n') + '\n'
     return `\n\n${horizonalAddornment}${content}${horizonalAddornment}\n`
   }
 
-  get logger() {
-    return this._logger
+  get info() {
+    return this.logger.info.bind(this.logger)
+  }
+  get warn() {
+    return this.logger.warn.bind(this.logger)
+  }
+  get error() {
+    return this.logger.error.bind(this.logger)
   }
 }

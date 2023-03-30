@@ -8,7 +8,7 @@ import {
 } from 'exceptions/index'
 
 export class ErrorHandlerMiddleware {
-  constructor(private readonly logger: Logger['logger']) { }
+  constructor(private readonly logger: Logger) { }
 
   sendResponse(res: Response, msg: string | string[], statusCode: number) {
     const response = BaseHttpResponse.error(msg, statusCode)
@@ -31,7 +31,7 @@ export class ErrorHandlerMiddleware {
       return this.sendResponse(res, err.msgs, 422)
     }
 
-    console.log(err) // TODO: make winston log errors
+    this.logger.error(err)
 
     return this.sendResponse(res, err.message, 500)
   }

@@ -22,6 +22,7 @@ module.exports = {
     "semi": [ERROR, "never"],
     "no-unused-vars": OFF,
     "no-debugger": ERROR,
+    "arrow-parens": [ERROR, "as-needed"],
     "@typescript-eslint/no-unused-vars": [ERROR],
     "@typescript-eslint/no-namespace": OFF,
   },

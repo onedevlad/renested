@@ -1,7 +1,7 @@
 import { Container } from 'inversify'
 
 import { sharedModules } from 'config/shared-modules'
-import { AppDataSource } from 'web/persistance/dataSource'
+import { DataSource } from 'web/persistance/data-source'
 import { setupServer } from 'web/setupServer'
 import { Logger } from 'services/logger'
 import { mock } from 'jest-mock-extended'
@@ -9,12 +9,12 @@ import { makeMockDataSource } from './mockDataSource'
 
 export const createTestingServer = (
   container: Container,
-  dataSource: AppDataSource = makeMockDataSource()
+  dataSource: DataSource = makeMockDataSource()
 ) => {
-  sharedModules.forEach((m) => container.bind(m).toSelf())
-  container.rebind(AppDataSource).toConstantValue(dataSource)
+  sharedModules.forEach(m => container.bind(m).toSelf())
+  container.rebind(DataSource).toConstantValue(dataSource)
 
-  const logger = mock<Logger>().logger
+  const logger = mock<Logger>()
   const app = setupServer({ container, logger })
 
   return app
