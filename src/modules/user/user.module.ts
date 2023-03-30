@@ -1,4 +1,5 @@
 import { ContainerModule } from 'inversify'
+
 import { UserController } from './user.controller'
 import { UserRepository } from './user.repository'
 import { ListUsersUseCase } from './use-cases/list-users.use-case'

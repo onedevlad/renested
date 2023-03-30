@@ -1,8 +1,9 @@
-import type { Request, Response, NextFunction } from 'express'
 import { ValidationError, validateSync } from 'class-validator'
+import { ValidatorOptions } from 'class-validator'
+
+import type { Request, Response, NextFunction } from 'express'
 import { BaseMiddleware } from 'web/lib/base-middleware'
 import { ValidationException } from 'exceptions/validation.exception'
-import { ValidatorOptions } from 'class-validator'
 import { Class } from 'utils/types'
 
 const validatorOptions: ValidatorOptions = {

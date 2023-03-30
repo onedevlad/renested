@@ -5,6 +5,8 @@ import {
   requestParam,
   response,
 } from 'inversify-express-utils'
+import { Response } from 'express'
+
 import { BaseController } from 'web/lib/base-controller'
 import { AuthMiddleware } from 'web/middlewares/auth.middleware'
 import {
@@ -15,7 +17,6 @@ import { ListUsersUseCase } from './use-cases/list-users.use-case'
 import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
 import { DeleteUserDto, DeleteUserRequestDto } from './dto'
 import { DeleteUserUseCase } from './use-cases/delete-user.use-case'
-import { Response } from 'express'
 
 @controller('/users')
 export class UserController extends BaseController {

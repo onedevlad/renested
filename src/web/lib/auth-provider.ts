@@ -1,6 +1,7 @@
 import { Request } from 'express'
 import { injectable, inject } from 'inversify'
 import { interfaces } from 'inversify-express-utils'
+
 import { TokenService } from 'services/token/token.service'
 import { Principal } from './auth-principal'
 

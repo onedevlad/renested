@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
+
 import { PaginationData } from 'utils/types'
 
 export type PaginatedResponse = Response<

@@ -1,5 +1,6 @@
 import { injectable } from 'inversify'
 import jwt from 'jsonwebtoken'
+
 import { UserEntity } from 'modules/user/user.entity'
 import { TokenPayload } from 'utils/types'
 

@@ -1,8 +1,9 @@
 import { Response } from 'express'
-import { IUseCase } from 'utils/types'
-import { BaseHttpResponse } from './base-http-response'
 import { injectable } from 'inversify'
 import { BaseHttpController, HttpContext } from 'inversify-express-utils'
+
+import { IUseCase } from 'utils/types'
+import { BaseHttpResponse } from './base-http-response'
 import { Principal } from './auth-principal'
 
 interface PrincipalHttpContext extends HttpContext {

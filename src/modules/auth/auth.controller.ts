@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
 import { controller, httpPost } from 'inversify-express-utils'
 
+import { ValidateRequestMiddleware } from 'web/middlewares/validate-request.middleware'
 import { LoginDataDto, CreateUserDto } from './dto'
 import { RegisterUserUseCase } from './use-cases/register-user.use-case'
 import { LoginUseCase } from './use-cases/login.use-case'

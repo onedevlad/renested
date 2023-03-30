@@ -4,6 +4,7 @@ import {
   ObjectLiteral,
 } from 'typeorm'
 import { injectable } from 'inversify'
+
 import { Logger } from 'services/logger'
 import { entitiesPath } from './entities'
 

@@ -1,11 +1,13 @@
+import { injectable } from 'inversify'
+
 import { AuthTokenDto, CreateUserDto } from 'modules/auth/dto'
 import { UserAlreadyExistsException } from 'modules/auth/exceptions/user-already-exists.exception'
-import { injectable } from 'inversify'
 import { IUseCase } from 'utils/types'
 import { PasswordService } from 'services/password/password.service'
-import { AuthRepository } from '../auth.repository'
 import { TokenService } from 'services/token/token.service'
 import { UserEntity } from 'modules/user/user.entity'
+
+import { AuthRepository } from '../auth.repository'
 
 @injectable()
 export class RegisterUserUseCase

@@ -1,13 +1,14 @@
 import { mock } from 'jest-mock-extended'
 import supertest from 'supertest'
+import { Container } from 'inversify'
 
 import { createTestingServer } from 'utils/test/create-testing-server'
-import { DeleteUserUseCase } from '../use-cases/delete-user.use-case'
-import { ListUsersUseCase } from '../use-cases/list-users.use-case'
 import { createTestToken } from 'utils/test/create-test-token'
 import { PaginationData } from 'utils/types'
+
+import { DeleteUserUseCase } from '../use-cases/delete-user.use-case'
+import { ListUsersUseCase } from '../use-cases/list-users.use-case'
 import { UserDto } from '../dto'
-import { Container } from 'inversify'
 import { UserController } from '../user.controller'
 
 const deleteUserUseCase = mock<DeleteUserUseCase>()

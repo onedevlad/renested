@@ -1,7 +1,8 @@
-import { UnauthorizedException } from "exceptions/unauthorized.exception"
 import { NextFunction, Request, Response } from "express"
 import { injectable } from "inversify"
 import { BaseMiddleware } from "inversify-express-utils"
+
+import { UnauthorizedException } from "exceptions/unauthorized.exception"
 
 @injectable()
 export class AuthMiddleware extends BaseMiddleware {

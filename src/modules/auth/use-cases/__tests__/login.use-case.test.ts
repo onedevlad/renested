@@ -1,12 +1,14 @@
 import { mock } from 'jest-mock-extended'
+import { Container } from 'inversify'
+
 import { PasswordService } from 'services/password/password.service'
 import { TokenService } from 'services/token/token.service'
-import { LoginUseCase } from '../login.use-case'
 import { AuthRepository } from 'modules/auth/auth.repository'
 import { InvalidCredentialsException } from 'modules/auth/exceptions'
 import { LoginDataDto } from 'modules/auth/dto'
 import { UserEntity } from 'modules/user/user.entity'
-import { Container } from 'inversify'
+
+import { LoginUseCase } from '../login.use-case'
 
 const setup = () => {
   const mockAuthRepository = mock<AuthRepository>()

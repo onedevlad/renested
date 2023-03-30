@@ -1,7 +1,9 @@
-import { IUseCase, PaginationData } from 'utils/types'
-import { UserDto } from '../dto'
 import { injectable } from 'inversify'
+
+import { IUseCase, PaginationData } from 'utils/types'
 import { UserRepository } from 'modules/user/user.repository'
+
+import { UserDto } from '../dto'
 
 @injectable()
 export class ListUsersUseCase implements IUseCase<PaginationData, UserDto[]> {

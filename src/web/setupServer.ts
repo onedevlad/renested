@@ -1,13 +1,11 @@
 import express, { Application as ExpressApp } from 'express'
-
-import type { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
+import { Container } from 'inversify'
 
-import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware'
+import { ErrorHandlerMiddleware } from 'web/middlewares/error-handler.middleware'
 import { Logger } from 'services/logger'
-
-import { AuthProvider } from './lib/auth-provider'
-import { initRequestContext } from './lib/request-context'
+import { AuthProvider } from 'web/lib/auth-provider'
+import { initRequestContext } from 'web/lib/request-context'
 
 interface SetupServerParams {
   container: Container
@@ -34,13 +32,13 @@ export const setupServer = ({
 
   const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger)
 
-  server.setErrorConfig((app) => {
+  server.setErrorConfig(app => {
     app.use(errorHandlerMiddleware.execute)
     setErrorConfig(app)
     return app
   })
 
-  server.setConfig((app) => {
+  server.setConfig(app => {
     app.use(express.json())
     app.use(initRequestContext({}))
     setConfig(app)

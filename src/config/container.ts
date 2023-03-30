@@ -2,7 +2,6 @@ import { Container, interfaces } from 'inversify'
 
 import { AuthModule } from 'modules/auth/auth.module'
 import { UserModule } from 'modules/user/user.module'
-
 import { sharedModules } from './shared-modules'
 
 const makeBind =

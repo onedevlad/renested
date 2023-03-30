@@ -1,12 +1,13 @@
 import { mock } from 'jest-mock-extended'
 import { Container } from 'inversify'
 import { Repository } from 'typeorm'
-import { AuthRepository } from '../auth.repository'
-import { AppDataSource } from 'web/persistance/dataSource'
-import { UserEntity } from 'modules/user/user.entity'
-import { CreateUserDto } from '../dto'
 
+import { DataSource } from 'web/persistance/data-source'
+import { UserEntity } from 'modules/user/user.entity'
 import { makeMockDataSource } from 'utils/test/mockDataSource'
+
+import { CreateUserDto } from '../dto'
+import { AuthRepository } from '../auth.repository'
 
 const setup = () => {
   const mockUserRepository = mock<Repository<UserEntity>>()
@@ -14,7 +15,7 @@ const setup = () => {
 
   const container = new Container()
   container.bind(AuthRepository).toSelf()
-  container.bind(AppDataSource).toConstantValue(mockDataSource)
+  container.bind(DataSource).toConstantValue(mockDataSource)
 
   const authRepository = container.get(AuthRepository)
 

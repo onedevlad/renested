@@ -1,14 +1,14 @@
-import morgan from 'morgan'
 import { Container } from 'inversify'
+import morgan from 'morgan'
 
+import { AppContainer } from 'config/container'
+import { Logger } from 'services/logger'
 import {
   Application,
   IAbstractApplicationOptions,
-} from './lib/abstract-application'
-import { DataSource } from './persistance/data-source'
-import { Logger } from 'services/logger'
-import { AppContainer } from 'config/container'
-import { setupServer } from './setupServer'
+} from 'web/lib/abstract-application'
+import { DataSource } from 'web/persistance/data-source'
+import { setupServer } from 'web/setupServer'
 
 class App extends Application {
   constructor() {
@@ -43,7 +43,7 @@ class App extends Application {
     const app = setupServer({
       container: this.container,
       logger,
-      setConfig: (app) => app.use(morgan('dev')),
+      setConfig: app => app.use(morgan('dev')),
     })
 
     app.listen(process.env.APP_PORT, () =>

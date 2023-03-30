@@ -1,10 +1,10 @@
 import { Container } from 'inversify'
+import { mock } from 'jest-mock-extended'
 
 import { sharedModules } from 'config/shared-modules'
 import { DataSource } from 'web/persistance/data-source'
 import { setupServer } from 'web/setupServer'
 import { Logger } from 'services/logger'
-import { mock } from 'jest-mock-extended'
 import { makeMockDataSource } from './mockDataSource'
 
 export const createTestingServer = (

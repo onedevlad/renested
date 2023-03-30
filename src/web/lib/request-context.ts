@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { TokenPayload } from 'utils/types'
 
 declare global {

@@ -1,7 +1,9 @@
 import { mock } from 'jest-mock-extended'
 import supertest from 'supertest'
+import { Container } from 'inversify'
 
 import { createTestingServer } from 'utils/test/create-testing-server'
+
 import { LoginUseCase } from '../use-cases/login.use-case'
 import { RegisterUserUseCase } from '../use-cases/register-user.use-case'
 import {
@@ -9,7 +11,6 @@ import {
   UserAlreadyExistsException,
 } from '../exceptions'
 import { AuthController } from '../auth.controller'
-import { Container } from 'inversify'
 
 const loginUseCase = mock<LoginUseCase>()
 const registerUserUseCase = mock<RegisterUserUseCase>()

@@ -1,5 +1,6 @@
-import { UnauthorizedException } from 'exceptions/unauthorized.exception'
 import { interfaces } from 'inversify-express-utils'
+
+import { UnauthorizedException } from 'exceptions/unauthorized.exception'
 import { TokenPayload } from 'utils/types'
 
 export class Principal implements interfaces.Principal {

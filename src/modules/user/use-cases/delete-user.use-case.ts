@@ -1,7 +1,8 @@
+import { injectable } from 'inversify'
+
 import { IUseCase } from 'utils/types'
 import { DeleteUserDto } from 'modules/user/dto'
 import { UnauthorizedException } from 'exceptions/unauthorized.exception'
-import { injectable } from 'inversify'
 import { UserRepository } from 'modules/user/user.repository'
 
 @injectable()
