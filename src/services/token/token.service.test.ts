@@ -16,4 +16,9 @@ describe('TokenService', () => {
 
     expect(tokenService.validateToken(token)).toEqual(tokenData)
   })
+
+  it('Should not parse invalid tokens', async () => {
+    const { tokenService } = setup()
+    expect(tokenService.validateToken('')).toBe(null)
+  })
 })

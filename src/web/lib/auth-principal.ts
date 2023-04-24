@@ -16,7 +16,7 @@ export class Principal implements interfaces.Principal {
   public async isResourceOwner() { return false }
   public async isInRole() { return false }
 
-  public getUserId() {
+  public getUserId = () => {
     if (!this.details) throw new UnauthorizedException()
     return this.details.id
   }

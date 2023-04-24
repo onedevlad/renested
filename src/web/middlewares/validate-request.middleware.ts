@@ -44,7 +44,7 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
   }
 
   static with(dto: Class) {
-    return new ValidateRequestMiddleware(dto, false).execute
+    return new ValidateRequestMiddleware(dto).execute
   }
 
   static withParams(dto: Class) {

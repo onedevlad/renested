@@ -12,8 +12,6 @@ export const handleErrors =
         try {
           return await originalMethod.apply(this, args)
         } catch (caughtError) {
-          if (!errorMap) throw caughtError
-
           for (const [err, code] of errorMap) {
             if (caughtError instanceof err)
               throw new HttpException(caughtError, code)

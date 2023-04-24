@@ -3,7 +3,7 @@ export class BaseHttpResponse {
 
   constructor(
     public readonly data: unknown = {},
-    errors: string[] | null = null,
+    errors: string[] | null,
     public readonly statusCode: number,
   ) {
     if (errors?.length) this.errors = errors

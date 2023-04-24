@@ -21,10 +21,14 @@ export class TokenService {
   }
 
   validateToken(token: string) {
-    const decoded = jwt.verify(token, SECRET)
+    try {
+      const decoded = jwt.verify(token, SECRET)
 
-    if (!decoded || typeof decoded === 'string') return null
+      if (!decoded || typeof decoded === 'string') return null
 
-    return decoded.data as TokenPayload
+      return decoded.data as TokenPayload
+    } catch(e) {
+      return null
+    }
   }
 }

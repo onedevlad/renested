@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 
 import { PaginationData } from 'utils/types'
@@ -9,25 +8,23 @@ export type PaginatedResponse = Response<
   { pagination: PaginationData }
 >
 
-const MAX_LIMIT = 20
+export const MAX_LIMIT = 20
 
-@injectable()
 export class PaginationMiddleware extends BaseMiddleware {
   private strToInt = (str: string, fallback: number) =>
-    isNaN(+str) ? fallback : +str
+    !str || isNaN(+str) ? fallback : +str
+
+  private clamp = (min: number, max: number, x: number) =>
+    Math.max(min, Math.min(x, max))
 
   handler(req: Request, res: PaginatedResponse, next: NextFunction) {
-    const rawLimit = (req.query.take ?? '').toString()
-    const rawOffset = (req.query.skip ?? '').toString()
+    const rawTake = (req.query.take ?? '').toString()
+    const rawSkip = (req.query.skip ?? '').toString()
 
-    const offset = this.strToInt(rawOffset, 0)
+    const skip = this.clamp(0, Infinity, this.strToInt(rawSkip, 0))
+    const take = this.clamp(0, MAX_LIMIT, this.strToInt(rawTake, MAX_LIMIT))
 
-    const limit = Math.min(this.strToInt(rawLimit, MAX_LIMIT), MAX_LIMIT)
-
-    res.locals.pagination = {
-      skip: offset,
-      take: limit,
-    }
+    res.locals.pagination = { skip, take }
 
     next()
   }
