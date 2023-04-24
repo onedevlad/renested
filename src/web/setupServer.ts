@@ -4,7 +4,6 @@ import { Container } from 'inversify'
 
 import { ErrorHandlerMiddleware } from 'web/middlewares/error-handler.middleware'
 import { Logger } from 'services/logger'
-import { AuthProvider } from 'web/lib/auth-provider'
 import { initRequestContext } from 'web/lib/request-context'
 
 interface SetupServerParams {
@@ -22,13 +21,7 @@ export const setupServer = ({
   setErrorConfig = noop,
   setConfig = noop,
 }: SetupServerParams) => {
-  const server = new InversifyExpressServer(
-    container,
-    null,
-    null,
-    null,
-    AuthProvider
-  )
+  const server = new InversifyExpressServer(container)
 
   const errorHandlerMiddleware = new ErrorHandlerMiddleware(logger)
 

@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { TokenPayload } from 'utils/types'
+import { Principal } from './auth-principal'
 
 declare global {
   namespace Express {
     export interface Request {
       context: {
-        tokenData?: TokenPayload
+        user?: Principal
       }
     }
   }

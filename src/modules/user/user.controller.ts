@@ -2,10 +2,9 @@ import {
   controller,
   httpDelete,
   httpGet,
-  requestParam,
   response,
 } from 'inversify-express-utils'
-import { Response } from 'express'
+import { Request, Response } from 'express'
 
 import { BaseController } from 'web/lib/base-controller'
 import { AuthMiddleware } from 'web/middlewares/auth.middleware'
@@ -41,10 +40,10 @@ export class UserController extends BaseController {
     AuthMiddleware,
     ValidateRequestMiddleware.withParams(DeleteUserRequestDto)
   )
-  async deleteUser(@requestParam('id') id: string, @response() res: Response) {
-    const myUserId = this.httpContext.user.getUserId()
+  async deleteUser(req: Request, res: Response) {
+    const myUserId = req.context.user?.getUserId()
 
-    const dto = DeleteUserDto.from({ id: +id, myUserId })
+    const dto = DeleteUserDto.from({ id: +req.params.id, myUserId })
     return this.executeUseCase(this.deleteUserUseCase, dto, res)
   }
 }
